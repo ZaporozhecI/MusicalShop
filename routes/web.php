@@ -19,3 +19,10 @@ Route::get('/', function () {
 Route::get('/hello', function () {
     return view('hello', ['title'=>'Hello world!']);
 });
+use App\Http\Controllers\CategoryController;
+Route::get('/category', [CategoryController::class, 'index']);
+Route::get('/category/{id}', [CategoryController::class, 'show']);
+
+use App\Http\Controllers\ProductController;
+Route::get('/product', [ProductController::class, 'index']);
+Route::get('/order/{id}', [ProductController::class, 'show']);
