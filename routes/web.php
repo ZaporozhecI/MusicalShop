@@ -26,3 +26,8 @@ Route::get('/category/{id}', [CategoryController::class, 'show']);
 use App\Http\Controllers\ProductController;
 Route::get('/product', [ProductController::class, 'index']);
 Route::get('/order/{id}', [ProductController::class, 'show']);
+Route::get('/product/create', [ProductController::class, 'create']);
+Route::post('/product', [ProductController::class, 'store']);
+Route::get('/product/edit/{id}', [ProductController::class, 'edit']);
+Route::post('/product/update/{id}', [ProductController::class, 'update']);
+Route::get('/product/destroy/{id}', [ProductController::class, 'destroy']);
