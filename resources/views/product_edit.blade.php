@@ -1,49 +1,43 @@
 
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>605-01</title>
-        <style> .is-invalid { color: red; } </style>
-    </head>
-    <body> 
-        <h2>Редактирование товара</h2>
-        <form method="post" action="{{ url('product/update/'.$product->id) }}">
-            @csrf
-            
-                <label>Название</label>
-                <input type="text" name="name" value="@if (old('name')) {{old('name')}} @else {{$product->name}} @endif" />
-                @error('name')
-                <div class="is-invalid">{{ $message }}</div>
-                @enderror
-                <br>
-                <label for="text">Цена</label>
-                <input type="text" name="price" value="@if (old('name')) {{old('price')}} @else {{$product->price}} @endif" />
-                @error('price')
-                <div class="is-invalid">{{ $message }}</div>
-                @enderror
-                <br>
-                <label>Категория:</label>
-                <select name="id_category" value="{{old('id_category')}}">
-                    <option style="">
-                    @foreach ($categories as $category)
-                        <option value="{{$category->id}}" 
-                            @if(old('id_category'))
-                            @if(old('id_category') == $category->id) selected @endif
-                            @else
-                            @if($product->id_category == $category->id) selected @endif
-                            @endif>{{$category->name}}
-                        </option>
-                    @endforeach
-                </select>
-                @error('id_category')
-                <div class="is-invalid">
-                    {{ $message }}
-                </div>
-                @enderror
-            <br>
-                <input type="submit">
-  
-            </form>
-    </body>
-</html>
+@extends('layout')
+@section('content')
+<div class="container mt-4">
+    <br>
+    <h2 class="mt-4 text-center">Редактирование товара</h2>
+    <form method="post" action="{{ url('product/update/'.$product->id) }}" class="mt-4">
+        @csrf
+        <div class="form-group">
+            <label for="name">Название:</label>
+            <input type="text" class="form-control" name="name" value="@if (old('name')) {{old('name')}} @else {{$product->name}} @endif" />
+            @error('name')
+            <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="price">Цена:</label>
+            <input type="text" class="form-control" name="price" value="@if (old('price')) {{old('price')}} @else {{$product->price}} @endif" />
+            @error('price')
+            <div class="text-danger">
+                {{ $message }}
+            </div>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="id_category">Категория товара:</label>
+            <select class="form-control" name="id_category">
+                @foreach ($categories as $categorya)
+                <option value="{{ $categorya->id }}" @if(old('id_category') == $categorya->id || $product->id_category == $categorya->id) selected @endif>{{ $categorya->name }}</option>
+                @endforeach
+            </select>
+            @error('id_category')
+            <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
+        <br>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+        </div>
+    </form>
+</div>
+@endsection
+

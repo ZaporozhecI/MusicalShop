@@ -20,11 +20,6 @@ class ProductController extends Controller
     }
     public function show(string $id)
     {
-        // $total=DB::table('order')->selectRaw('sum(product_order.price * product_order.quantity) as total')
-        // ->join('product_order','order.id','=', 'product_order.id_order')
-        // ->join('product', 'product.id','=', 'product_order.id_product')
-        // ->where('order.id', $id)
-        // ->first();
         $order = Order::where('id', $id)->first();
         return view('order', ['order' => $order]);
 
@@ -32,7 +27,10 @@ class ProductController extends Controller
     }
     public function create()
     {
-   
+        if (Gate::denies('add-product')) {
+            return redirect('/product')->withErrors(['error'=> 'У вас нет разрешения добавлять товары',]);
+      
+        }
         return view('product_create', [
             'categories' => Category::all()
         ]);
@@ -46,18 +44,27 @@ class ProductController extends Controller
             ]);
             $product=new Product($validated);
             $product->save();
-            return redirect('/product');
-      
+            return redirect('/product')->withErrors(['success'=> 'Товар успешно добавлен',]);    
     }
     public function edit($id)
     {
+        if (Gate::denies('edit-product')) {
+            
+            return redirect('/product')->withErrors(['error'=> 'У вас нет разрешения редактировать товары',]);
+        }
         return view('product_edit', [
             'product' => Product::find($id),
             'categories' => Category::all()
+            
         ]);
+        
     }
     public function update(Request $request, $id)
     {
+        if (Gate::denies('edit-product')) {
+            
+            return redirect('/error')->with('message', 'У вас нет разрешения редактировать советы');
+        }
             $validated = $request->validate([
             'name'=>'required|max:255',
             'price'=>'required|integer',
@@ -68,19 +75,18 @@ class ProductController extends Controller
         $product->price = $validated['price'];
         $product->id_category = $validated['id_category'];
         $product->save();
-        return redirect('/product');
+        return redirect('/product')->withErrors(['success'=> 'Товар успешно изменен',]);
   
     }
     public function destroy($id)
     {
     
         if (!Gate::allows('destroy-product', Product::find($id))) {
-            return redirect('/error')->with(['message'=> 'У вас нет разрешения удалять товары',]);
+            return redirect('/product')->withErrors(['error'=> 'У вас нет разрешения удалять товары',]);
         }
     
         Product::destroy($id);
-    
-        return redirect('/product');
-    
+
+        return redirect('/product')->withErrors(['success'=> 'Товар успешно удален',]);
     }
 }

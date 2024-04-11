@@ -30,5 +30,12 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('destroy-product', function (User $user, Product $Product){
             return $user->is_admin;
         });
+        Gate::define('edit-product', function (User $user){
+            return $user->is_admin; // Предполагая, что роль администратора имеет ID 1
+        });
+        
+        Gate::define('add-product', function (User $user){
+            return $user->is_admin; // Только администраторы могут добавлять советы
+        });
     }
 }
