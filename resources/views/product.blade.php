@@ -29,28 +29,10 @@
                         </td>
                     </tr>
                     @endforeach
+                   
                 </tbody>
-            </table>
-
-     {{--   <h2>{{ $category ? "Список товаров категории ".$category->name : 'Неверный id категории' }}</h2>
-        @if($category)
-            <table border="1">
-                <thead>
-                    <tr>
-                        <td>id</td>
-                        <td>Название</td>
-                        <td>Цена</td>
-                    </tr>
-                </thead>
-                @foreach ($category->products as $product)
-                    <tr>
-                        <td>{{ $product->id }}</td>
-                        <td>{{ $product->name }}</td>
-                        <td>{{ $product->price }}</td>
-                    </tr>
-                @endforeach
-            </table>
-        @endif--}}
+            </table> 
+            {{ $product->links() }}
     </body> 
     
 </html>

@@ -10,10 +10,10 @@ use App\Models\Category;
 class ProductController extends Controller
 {
     //
-    public function index()
-    {
+    public function index(Request $request)
+    { $perpage = $request->perpage ?? 2;
         return view('product', [
-            'product' => Product::all()
+            'product' => Product::paginate($perpage)->withQueryString()
         ]);
     }
     public function show(string $id)
