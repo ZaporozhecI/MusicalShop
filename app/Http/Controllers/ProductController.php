@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Order;
 use App\Models\Category;
+use Illuminate\Support\Facades\Gate;
+
 class ProductController extends Controller
 {
     //
@@ -72,8 +74,13 @@ class ProductController extends Controller
     public function destroy($id)
     {
     
+        if (!Gate::allows('destroy-product', Product::find($id))) {
+            return redirect('/error')->with(['message'=> 'У вас нет разрешения удалять товары',]);
+        }
+    
         Product::destroy($id);
     
         return redirect('/product');
+    
     }
 }

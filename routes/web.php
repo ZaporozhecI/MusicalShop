@@ -31,3 +31,12 @@ Route::post('/product', [ProductController::class, 'store']);
 Route::get('/product/edit/{id}', [ProductController::class, 'edit']);
 Route::post('/product/update/{id}', [ProductController::class, 'update']);
 Route::get('/product/destroy/{id}', [ProductController::class, 'destroy']);
+
+use App\Http\Controllers\LoginController;
+Route::get('/login', [LoginController::class, 'login']);
+Route::get('/logout', [LoginController::class, 'logout']);
+Route::post('/auth', [LoginController::class, 'authenticate']);
+
+Route::get('/error', function () {
+    return view('error', ['message' => session('message')]);
+});
